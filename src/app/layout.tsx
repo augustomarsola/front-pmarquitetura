@@ -1,5 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { getPageBySlug } from "@/lib/wpClient";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -38,17 +39,23 @@ export const metadata: Metadata = {
 `,
 };
 
-export default function RootLayout({
+export const revalidate = 600; // 10 minutes
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const footerInfo = await getPageBySlug("contato");
+  const logoPath = `${process.env.WP_BASE_URL}/pm-arquitetura_logo-site_final/`;
   return (
     <html lang="pt-BR">
-      <body className={`${acuminPro.className} antialiased`}>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+      <body
+        className={`${acuminPro.className} antialiased bg-white flex flex-col min-h-screen`}
+      >
+        <Header logoPath={logoPath} />
+        <main className="grow">{children}</main>
+        <Footer content={footerInfo.content.rendered} className="self-end" />
       </body>
     </html>
   );
