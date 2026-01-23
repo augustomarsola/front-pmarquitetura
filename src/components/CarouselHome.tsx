@@ -1,31 +1,63 @@
 "use client";
+import type { CarouselItem } from "@/lib/wpTypes";
 import Fade from "embla-carousel-fade";
+import { Plus } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  CarouselItem as CarouselSlide,
 } from "./ui/carousel";
 
-export function CarouselHome() {
+interface CarouselHomeProps {
+  items: CarouselItem[];
+}
+
+export function CarouselHome({ items }: CarouselHomeProps) {
   return (
     <Carousel
-      className="w-full max-w-[12rem] sm:max-w-xs"
+      className="w-full"
       opts={{ loop: true }}
-      plugins={[Fade()]}
+      plugins={[
+        Fade(),
+        //  Autoplay({ delay: 4000, stopOnInteraction: false })
+      ]}
     >
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index}>
-            <div className="p-1">
-              <span className="text-4xl font-semibold">{index + 1}</span>
+        {items.map((item, index) => (
+          <CarouselSlide key={index}>
+            <div className="relative">
+              <Image
+                src={item.image.src}
+                alt={item.image.alt}
+                width={item.image.width}
+                height={item.image.height}
+                className="w-full h-auto object-cover"
+                priority={index === 0}
+              />
+              {item.link.slug && (
+                <div className="py-2 bg-gray-200 text-end pr-22">
+                  <Link
+                    href={`/projetos/${item.link.slug}`}
+                    className="text-gray-900 hover:text-gray-600 transition-colors uppercase text-xs"
+                  >
+                    {item.link.label}
+                    <Plus
+                      className="inline-block size-4 ml-5 -mt-1"
+                      strokeWidth={5}
+                    />
+                  </Link>
+                </div>
+              )}
             </div>
-          </CarouselItem>
+          </CarouselSlide>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="left-0 h-full rounded-none opacity-50" />
+      <CarouselNext className="right-0 h-full rounded-none opacity-50" />
     </Carousel>
   );
 }

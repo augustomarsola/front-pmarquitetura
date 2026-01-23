@@ -9,7 +9,7 @@ export function Footer({ content, className }: FooterProps) {
   return (
     <footer
       className={cn(
-        "flex flex-col text-gray-400 text-sm w-full max-w-5xl mx-auto py-7",
+        "flex flex-col text-gray-400 text-xs w-full max-w-5xl mx-auto p-7 lg:px-0",
         className,
       )}
     >
