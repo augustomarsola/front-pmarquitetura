@@ -3,12 +3,14 @@ import type {
   CarouselImage,
   CarouselItem,
   CarouselLink,
+  PageContent,
+  PageWithFeaturedImage,
   WPPageProps,
 } from "./wpTypes";
 
 export async function getPageBySlug(slug: string): Promise<WPPageProps> {
   const res = await fetch(
-    `${process.env.WP_BASE_URL}/wp-json/wp/v2/pages?slug=${slug}`,
+    `${process.env.WP_BASE_URL}/wp-json/wp/v2/pages?slug=${slug}&_embed`,
     {
       next: {
         tags: [allTagsSlug],
@@ -95,4 +97,60 @@ export async function getHomeCarouselData(): Promise<CarouselItem[]> {
   }));
 
   return carouselItems;
+}
+
+/**
+ * Extrai o conteúdo de uma página (primeira imagem + texto HTML)
+ */
+export async function getPageContent(slug: string): Promise<PageContent> {
+  const page = await getPageBySlug(slug);
+  const html = page.content.rendered;
+
+  // Extrai a primeira imagem
+  const images = extractImagesFromHTML(html);
+  const firstImage = images.length > 0 ? images[0] : null;
+
+  // Remove a primeira tag <figure> que contém a imagem para não duplicar
+  const htmlWithoutFirstImage = html.replace(
+    /<figure[^>]*>\s*<img[^>]*>\s*<\/figure>/,
+    "",
+  );
+
+  return {
+    image: firstImage,
+    htmlContent: htmlWithoutFirstImage,
+  };
+}
+
+/**
+ * Extrai o conteúdo de uma página com featured image
+ */
+export async function getPageWithFeaturedImage(
+  slug: string,
+): Promise<PageWithFeaturedImage> {
+  const page = await getPageBySlug(slug);
+  const html = page.content.rendered;
+
+  // Extrai a featured image do _embedded
+  let featuredImage: CarouselImage | null = null;
+  if (
+    page._embedded &&
+    page._embedded["wp:featuredmedia"] &&
+    page._embedded["wp:featuredmedia"].length > 0
+  ) {
+    const media = page._embedded["wp:featuredmedia"][0];
+    const fullSize = media.media_details.sizes.full;
+
+    featuredImage = {
+      src: fullSize.source_url,
+      alt: media.alt_text || "",
+      width: fullSize.width,
+      height: fullSize.height,
+    };
+  }
+
+  return {
+    featuredImage,
+    htmlContent: html,
+  };
 }

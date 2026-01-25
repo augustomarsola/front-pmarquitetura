@@ -56,8 +56,8 @@ export function CarouselHome({ items }: CarouselHomeProps) {
           </CarouselSlide>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-0 h-full rounded-none opacity-50" />
-      <CarouselNext className="right-0 h-full rounded-none opacity-50" />
+      <CarouselPrevious className="left-0 h-full rounded-none opacity-50 cursor-pointer" />
+      <CarouselNext className="right-0 h-full rounded-none opacity-50 cursor-pointer" />
     </Carousel>
   );
 }
