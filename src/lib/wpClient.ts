@@ -201,7 +201,7 @@ function extractTaxonomies(post: WPPost): {
  */
 export async function getAllPosts(postType: PostType): Promise<PostListItem[]> {
   const res = await fetch(
-    `${process.env.WP_BASE_URL}/wp-json/wp/v2/${postType}?_embed`,
+    `${process.env.WP_BASE_URL}/wp-json/wp/v2/${postType}?_embed&orderby=date&order=desc`,
     {
       next: {
         tags: [allTagsSlug],

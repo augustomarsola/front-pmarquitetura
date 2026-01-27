@@ -1,5 +1,6 @@
 "use client";
 import type { CarouselItem } from "@/lib/wpTypes";
+import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
 import { Plus } from "lucide-react";
 import Image from "next/image";
@@ -21,10 +22,7 @@ export function CarouselHome({ items }: CarouselHomeProps) {
     <Carousel
       className="w-full"
       opts={{ loop: true }}
-      plugins={[
-        Fade(),
-        //  Autoplay({ delay: 4000, stopOnInteraction: false })
-      ]}
+      plugins={[Fade(), Autoplay({ delay: 4000, stopOnInteraction: false })]}
     >
       <CarouselContent>
         {items.map((item, index) => (
