@@ -26,6 +26,7 @@ export interface WPPageProps {
   featured_media?: number;
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];
+    "wp:term"?: Taxonomy[][];
   };
 }
 
@@ -55,3 +56,57 @@ export interface PageWithFeaturedImage {
   featuredImage: CarouselImage | null;
   htmlContent: string;
 }
+
+// Interfaces para Posts
+export interface Taxonomy {
+  id: number;
+  name: string;
+  slug: string;
+  taxonomy: string;
+}
+
+export interface WPPost {
+  id: number;
+  title: {
+    rendered: string;
+  };
+  content: {
+    rendered: string;
+  };
+  slug: string;
+  type: string;
+  featured_media: number;
+  ano: number[];
+  categoria: number[];
+  local: number[];
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+    "wp:term"?: Taxonomy[][];
+  };
+}
+
+export interface PostListItem {
+  id: number;
+  title: string;
+  slug: string;
+  featuredImage: CarouselImage | null;
+  taxonomies: {
+    ano: Taxonomy[];
+    categoria: Taxonomy[];
+    local: Taxonomy[];
+  };
+}
+
+export interface PostDetail {
+  title: string;
+  slug: string;
+  images: CarouselImage[];
+  htmlContent: string;
+  taxonomies: {
+    ano: Taxonomy[];
+    categoria: Taxonomy[];
+    local: Taxonomy[];
+  };
+}
+
+export type PostType = "projetos" | "produtos" | "publicacoes";

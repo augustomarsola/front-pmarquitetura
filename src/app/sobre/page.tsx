@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { getPageContent } from "@/lib/wpClient";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Sobre() {
   const pageData = await getPageContent("sobre");
@@ -17,7 +18,9 @@ export default async function Sobre() {
       <Breadcrumb className="mb-8">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/sobre">Sobre</BreadcrumbLink>
+            <BreadcrumbLink asChild={true}>
+              <Link href="/sobre">Sobre</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

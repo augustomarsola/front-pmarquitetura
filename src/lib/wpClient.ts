@@ -5,7 +5,12 @@ import type {
   CarouselLink,
   PageContent,
   PageWithFeaturedImage,
+  PostDetail,
+  PostListItem,
+  PostType,
+  Taxonomy,
   WPPageProps,
+  WPPost,
 } from "./wpTypes";
 
 export async function getPageBySlug(slug: string): Promise<WPPageProps> {
@@ -152,5 +157,134 @@ export async function getPageWithFeaturedImage(
   return {
     featuredImage,
     htmlContent: html,
+  };
+}
+
+/**
+ * Extrai taxonomias de um post do WordPress
+ */
+function extractTaxonomies(post: WPPost): {
+  ano: Taxonomy[];
+  categoria: Taxonomy[];
+  local: Taxonomy[];
+} {
+  const taxonomies = {
+    ano: [] as Taxonomy[],
+    categoria: [] as Taxonomy[],
+    local: [] as Taxonomy[],
+  };
+
+  if (!post._embedded || !post._embedded["wp:term"]) {
+    return taxonomies;
+  }
+
+  // wp:term retorna um array de arrays de taxonomias
+  const terms = post._embedded["wp:term"];
+
+  for (const termGroup of terms) {
+    for (const term of termGroup) {
+      if (term.taxonomy === "ano") {
+        taxonomies.ano.push(term);
+      } else if (term.taxonomy === "categoria") {
+        taxonomies.categoria.push(term);
+      } else if (term.taxonomy === "local") {
+        taxonomies.local.push(term);
+      }
+    }
+  }
+
+  return taxonomies;
+}
+
+/**
+ * Busca todos os posts de um tipo específico
+ */
+export async function getAllPosts(postType: PostType): Promise<PostListItem[]> {
+  const res = await fetch(
+    `${process.env.WP_BASE_URL}/wp-json/wp/v2/${postType}?_embed`,
+    {
+      next: {
+        tags: [allTagsSlug],
+      },
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${postType}`);
+  }
+
+  const posts: WPPost[] = await res.json();
+
+  return posts.map((post) => {
+    let featuredImage: CarouselImage | null = null;
+
+    if (
+      post._embedded &&
+      post._embedded["wp:featuredmedia"] &&
+      post._embedded["wp:featuredmedia"].length > 0
+    ) {
+      const media = post._embedded["wp:featuredmedia"][0];
+      featuredImage = {
+        src: media.source_url,
+        alt: media.alt_text || "",
+        width: media.media_details.width,
+        height: media.media_details.height,
+      };
+    }
+
+    return {
+      id: post.id,
+      title: post.title.rendered,
+      slug: post.slug,
+      featuredImage,
+      taxonomies: extractTaxonomies(post),
+    };
+  });
+}
+
+/**
+ * Busca um post específico por slug e tipo
+ */
+export async function getPostBySlug(
+  postType: PostType,
+  slug: string,
+): Promise<PostDetail> {
+  const res = await fetch(
+    `${process.env.WP_BASE_URL}/wp-json/wp/v2/${postType}?slug=${slug}&_embed`,
+    {
+      next: {
+        tags: [allTagsSlug],
+      },
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${postType} with slug: ${slug}`);
+  }
+
+  const posts: WPPost[] = await res.json();
+
+  if (posts.length === 0) {
+    throw new Error(`Post not found: ${slug}`);
+  }
+
+  const post = posts[0];
+  const html = post.content.rendered;
+
+  // Extrai todas as imagens do conteúdo
+  const images = extractImagesFromHTML(html);
+
+  // Remove a galeria de imagens do HTML para separar imagens do texto
+  const htmlWithoutGallery = html.replace(
+    /<figure class="wp-block-gallery[^>]*>[\s\S]*?<\/figure>/,
+    "",
+  );
+
+  return {
+    title: post.title.rendered,
+    slug: post.slug,
+    images,
+    htmlContent: htmlWithoutGallery,
+    taxonomies: extractTaxonomies(post),
   };
 }

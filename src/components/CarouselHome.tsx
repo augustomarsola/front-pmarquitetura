@@ -39,7 +39,7 @@ export function CarouselHome({ items }: CarouselHomeProps) {
                 priority={index === 0}
               />
               {item.link.slug && (
-                <div className="py-2 bg-gray-200 text-end pr-22">
+                <div className="py-2 bg-gray-200 text-end pr-22 after:content-[''] after:block after:w-10 after:h-10 after:bg-gray-300 after:absolute after:bottom-0 after:right-0 relative before:content[''] before:block before:w-10 before:h-10 before:bg-gray-300 before:absolute before:bottom-0 before:left-0">
                   <Link
                     href={`/projetos/${item.link.slug}`}
                     className="text-gray-900 hover:text-gray-600 transition-colors uppercase text-xs"
@@ -56,8 +56,8 @@ export function CarouselHome({ items }: CarouselHomeProps) {
           </CarouselSlide>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-0 h-full rounded-none opacity-50 cursor-pointer" />
-      <CarouselNext className="right-0 h-full rounded-none opacity-50 cursor-pointer" />
+      <CarouselPrevious className="left-0 h-full rounded-none opacity-50 cursor-pointer w-10 border-transparent" />
+      <CarouselNext className="right-0 h-full rounded-none opacity-50 cursor-pointer w-10 border-transparent" />
     </Carousel>
   );
 }

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { getPageWithFeaturedImage } from "@/lib/wpClient";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Contato() {
   const pageData = await getPageWithFeaturedImage("contato");
@@ -17,7 +18,9 @@ export default async function Contato() {
       <Breadcrumb className="mb-8">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/contato">Contato</BreadcrumbLink>
+            <BreadcrumbLink asChild={true}>
+              <Link href="/contato">Contato</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

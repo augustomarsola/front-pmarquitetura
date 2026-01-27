@@ -48,7 +48,7 @@ export function Header({ logoPath }: HeaderProps) {
   ];
 
   return (
-    <header className="flex items-end justify-between px-6 pb-4 w-full max-w-5xl mx-auto lg:px-0">
+    <header className="flex items-end justify-between px-6 pb-8 w-full max-w-5xl mx-auto lg:px-0">
       <div>
         <Link href="/">
           <Image
@@ -68,9 +68,9 @@ export function Header({ logoPath }: HeaderProps) {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className={`transition-colors text-xs uppercase border-t-3 hover:border-gray-900 hover:text-gray-900 block px-4 pt-13 mb-4 ${
+                className={`transition-colors text-xs uppercase border-t-3 hover:border-gray-900 hover:text-gray-900 block px-3 pt-13 mb-4 ${
                   isActive(link.href)
-                    ? "text-gray-900 font-semibold border-gray-900"
+                    ? "text-gray-900 border-gray-900"
                     : "text-gray-600 border-transparent"
                 }`}
               >
