@@ -49,7 +49,7 @@ export function CarouselProjeto({ images }: CarouselProjetoProps) {
                 alt={image.alt}
                 width={image.width}
                 height={image.height}
-                className="w-full h-auto object-cover"
+                className="w-full h-auto max-h-150 object-contain"
                 priority={index === 0}
               />
             </CarouselItem>
