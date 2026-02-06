@@ -2,7 +2,6 @@
 
 import type { CarouselImage } from "@/lib/wpTypes";
 import Autoplay from "embla-carousel-autoplay";
-import Fade from "embla-carousel-fade";
 import Image from "next/image";
 import { useState } from "react";
 import {
@@ -38,7 +37,7 @@ export function CarouselProjeto({ images }: CarouselProjetoProps) {
       <Carousel
         className="w-full"
         opts={{ loop: true }}
-        plugins={[Fade(), Autoplay({ delay: 4000, stopOnInteraction: false })]}
+        plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
         setApi={handleApiChange}
       >
         <CarouselContent>
