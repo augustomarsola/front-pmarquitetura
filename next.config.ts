@@ -11,6 +11,18 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "http",
+        hostname: "pmarquitetura.com.br",
+        port: "",
+        pathname: "/cms/wp-content/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "pmarquitetura.com.br",
+        port: "",
+        pathname: "/cms/wp-content/uploads/**",
+      },
     ],
     // Permite IPs privados em desenvolvimento
     dangerouslyAllowSVG: true,
