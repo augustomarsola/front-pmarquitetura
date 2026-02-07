@@ -15,13 +15,13 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "pmarquitetura.com.br",
         port: "",
-        pathname: "/cms/wp-content/uploads/**",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "pmarquitetura.com.br",
         port: "",
-        pathname: "/cms/wp-content/uploads/**",
+        pathname: "/**",
       },
     ],
     // Permite IPs privados em desenvolvimento
