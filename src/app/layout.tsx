@@ -50,6 +50,9 @@ export default async function RootLayout({
   const logoPath = `${process.env.WP_BASE_URL}/pm-arquitetura_logo-site_final/`;
   return (
     <html lang="pt-BR">
+      <head>
+        <meta name="apple-mobile-web-app-title" content="PM Arquitetura" />
+      </head>
       <body
         className={`${acuminPro.className} antialiased bg-white flex flex-col min-h-screen`}
       >
