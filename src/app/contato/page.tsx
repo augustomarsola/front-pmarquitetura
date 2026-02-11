@@ -7,8 +7,27 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { getPageWithFeaturedImage } from "@/lib/wpClient";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Contato | Entre em Contato com PM Arquitetura",
+  description:
+    "Entre em contato com o estúdio PM Arquitetura para discutir seu projeto de arquitetura ou design de interiores. Atendimento personalizado em São Paulo.",
+  keywords: [
+    "contato arquiteto",
+    "orçamento arquitetura",
+    "consulta arquitetura são paulo",
+    "projeto arquitetônico orçamento",
+  ],
+  openGraph: {
+    title: "Contato | PM Arquitetura São Paulo",
+    description:
+      "Entre em contato para discutir seu projeto de arquitetura ou design de interiores.",
+    url: "/contato",
+  },
+};
 
 export default async function Contato() {
   const pageData = await getPageWithFeaturedImage("contato");

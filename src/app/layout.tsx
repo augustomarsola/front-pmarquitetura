@@ -1,5 +1,10 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import {
+  localBusinessSchema,
+  organizationSchema,
+  websiteSchema,
+} from "@/lib/schema";
 import { getPageBySlug } from "@/lib/wpClient";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -31,12 +36,76 @@ const acuminPro = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "PM Arquitetura",
-  description: `
-  O estúdio PM Arquitetura foi fundado em 2007 pelo arquiteto Paulo Mencarini.
-
-  Formado pelo Centro Universitário Belas Artes de São Paulo. Desenvolvemos projetos de arquitetura, design de interiores e peças autorais. Desde 2019, o arquiteto Lucas Navarro integra a equipe. Formado pela Universidade São Judas Tadeu (anual – Mooca) onde desenvolveu monitoria de projeto e posterior estagio acadêmico para o Do.co.mo.mo_sp.
-`,
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://pmarquitetura.com.br",
+  ),
+  title: {
+    default:
+      "PM Arquitetura | Projetos de Arquitetura e Design de Interiores em São Paulo",
+    template: "%s | PM Arquitetura",
+  },
+  description:
+    "Estúdio de arquitetura em São Paulo especializado em projetos residenciais, comerciais e design de interiores. Atendimento personalizado com linguagem contemporânea e minimalista desde 2007.",
+  keywords: [
+    "arquitetura",
+    "design de interiores",
+    "arquiteto são paulo",
+    "projeto arquitetônico",
+    "PM Arquitetura",
+    "Paulo Mencarini",
+    "Lucas Navarro",
+    "arquitetura contemporânea",
+    "arquitetura minimalista",
+    "reforma residencial",
+    "projeto comercial",
+  ],
+  authors: [{ name: "PM Arquitetura" }],
+  creator: "PM Arquitetura",
+  publisher: "PM Arquitetura",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "/",
+    siteName: "PM Arquitetura",
+    title: "PM Arquitetura | Projetos de Arquitetura e Design de Interiores",
+    description:
+      "Estúdio de arquitetura em São Paulo especializado em projetos residenciais, comerciais e design de interiores. Atendimento personalizado desde 2007.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "PM Arquitetura - Estúdio de Arquitetura e Design",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PM Arquitetura | Projetos de Arquitetura e Design de Interiores",
+    description:
+      "Estúdio de arquitetura em São Paulo especializado em projetos residenciais, comerciais e design de interiores.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    // google: "código-de-verificação-aqui",
+    // yandex: "código-de-verificação-aqui",
+  },
 };
 
 export const revalidate = 600; // 10 minutes
@@ -52,6 +121,28 @@ export default async function RootLayout({
     <html lang="pt-BR">
       <head>
         <meta name="apple-mobile-web-app-title" content="PM Arquitetura" />
+        <link
+          rel="canonical"
+          href={
+            process.env.NEXT_PUBLIC_SITE_URL || "https://pmarquitetura.com.br"
+          }
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusinessSchema),
+          }}
+        />
       </head>
       <body
         className={`${acuminPro.className} antialiased bg-white flex flex-col min-h-screen`}

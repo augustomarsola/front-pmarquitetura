@@ -1,0 +1,17 @@
+# Robots.txt para PM Arquitetura
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://pmarquitetura.com.br/sitemap.xml
+
+# Regras específicas para bots de SEO
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Bloquear acesso a arquivos sensíveis
+Disallow: /api/
+Disallow: /_next/static/

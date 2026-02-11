@@ -7,8 +7,28 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { getPageContent } from "@/lib/wpClient";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Sobre | Conheça o Estúdio PM Arquitetura",
+  description:
+    "Fundado em 2007 por Paulo Mencarini, o PM Arquitetura desenvolve projetos de arquitetura e design de interiores com atendimento personalizado. Conheça nossa história e equipe.",
+  keywords: [
+    "sobre pm arquitetura",
+    "paulo mencarini arquiteto",
+    "lucas navarro arquiteto",
+    "estúdio de arquitetura são paulo",
+    "arquitetura contemporânea",
+  ],
+  openGraph: {
+    title: "Sobre o PM Arquitetura | Estúdio de Arquitetura em São Paulo",
+    description:
+      "Conheça a história do estúdio fundado em 2007 e nossa equipe de arquitetos especializados em projetos personalizados.",
+    url: "/sobre",
+  },
+};
 
 export default async function Sobre() {
   const pageData = await getPageContent("sobre");

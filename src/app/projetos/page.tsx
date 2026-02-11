@@ -1,5 +1,26 @@
 import { getAllPosts } from "@/lib/wpClient";
+import type { Metadata } from "next";
 import { ProjetosClient } from "./ProjetosClient";
+
+export const metadata: Metadata = {
+  title: "Projetos | Portfólio de Arquitetura PM Arquitetura",
+  description:
+    "Explore nosso portfólio completo de projetos de arquitetura residencial, comercial e corporativa. Projetos contemporâneos e minimalistas desenvolvidos em São Paulo.",
+  keywords: [
+    "projetos arquitetura",
+    "portfólio arquitetura",
+    "projetos residenciais",
+    "projetos comerciais",
+    "arquitetura contemporânea",
+    "obras pm arquitetura",
+  ],
+  openGraph: {
+    title: "Projetos de Arquitetura | PM Arquitetura",
+    description:
+      "Conheça nosso portfólio completo de projetos residenciais, comerciais e corporativos.",
+    url: "/projetos",
+  },
+};
 
 export default async function Projetos() {
   const projetos = await getAllPosts("projetos");

@@ -1,5 +1,25 @@
 import { getAllPosts } from "@/lib/wpClient";
+import type { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Publicações | Notícias e Artigos PM Arquitetura",
+  description:
+    "Acompanhe as publicações, notícias e artigos do estúdio PM Arquitetura. Fique por dentro de nossos projetos mais recentes e tendências de arquitetura.",
+  keywords: [
+    "publicações arquitetura",
+    "notícias arquitetura",
+    "artigos design",
+    "blog arquitetura",
+    "tendências arquitetura",
+  ],
+  openGraph: {
+    title: "Publicações | PM Arquitetura",
+    description:
+      "Notícias, artigos e atualizações sobre nossos projetos e tendências de arquitetura.",
+    url: "/publicacoes",
+  },
+};
 
 export default async function Publicacoes() {
   const publicacoes = await getAllPosts("publicacoes");

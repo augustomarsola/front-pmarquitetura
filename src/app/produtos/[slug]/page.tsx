@@ -7,12 +7,58 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { generateProjectSchema } from "@/lib/schema";
 import { getPostBySlug } from "@/lib/wpClient";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface ProdutoSlugProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ProdutoSlugProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  try {
+    const produto = await getPostBySlug("produtos", slug);
+
+    const categoria = produto.taxonomies.categoria[0]?.name || "";
+    const local = produto.taxonomies.local[0]?.name || "";
+    const ano = produto.taxonomies.ano[0]?.name || "";
+
+    const description = `${produto.title} - Design de móveis e peças autorais${local ? ` em ${local}` : ""}${ano ? ` - ${ano}` : ""}. ${categoria ? `Categoria: ${categoria}.` : ""} Desenvolvido pelo estúdio PM Arquitetura.`;
+
+    return {
+      title: `${produto.title} | Design de Móveis`,
+      description,
+      keywords: [
+        produto.title,
+        "design de móveis",
+        "peças autorais",
+        categoria.toLowerCase(),
+        "móveis customizados",
+        "pm arquitetura",
+      ].filter(Boolean),
+      openGraph: {
+        title: `${produto.title} | PM Arquitetura`,
+        description,
+        url: `/produtos/${slug}`,
+        images: produto.images.slice(0, 1).map((img) => ({
+          url: img.src,
+          width: img.width,
+          height: img.height,
+          alt: img.alt || produto.title,
+        })),
+      },
+    };
+  } catch {
+    return {
+      title: "Produto não encontrado",
+    };
+  }
 }
 
 export default async function ProdutosSlug({ params }: ProdutoSlugProps) {
@@ -21,7 +67,7 @@ export default async function ProdutosSlug({ params }: ProdutoSlugProps) {
   let produto;
   try {
     produto = await getPostBySlug("produtos", slug);
-  } catch (error) {
+  } catch {
     notFound();
   }
 
@@ -40,13 +86,13 @@ export default async function ProdutosSlug({ params }: ProdutoSlugProps) {
   // Primeiros 3 parágrafos em uppercase
   const firstThreeParagraphs = paragraphs.slice(0, 3);
   const remainingContent = produto.htmlContent
-    .replace(/<p[^>]*>.*?<\/p>/g, (match, offset) => {
+    .replace(/<p[^>]*>.*?<\/p>/g, (match) => {
       const index = paragraphs.indexOf(
         match.replace(/<\/?p[^>]*>/g, "").trim(),
       );
       return index < 3 ? "" : match;
     })
-    .replace(/<figure[^>]*>.*?<\/figure>/g, "") // Remove todas as figuras/imagens
+    .replace(/<figure[^>]*>[\s\S]*?<\/figure>/g, "") // Remove todas as figuras/imagens
     .replace(/<div[^>]*class="wp-block-group[^"]*"[^>]*>/g, "") // Remove divs do WordPress
     .replace(/<\/div>/g, "")
     .trim();
@@ -125,6 +171,12 @@ export default async function ProdutosSlug({ params }: ProdutoSlugProps) {
           />
         )}
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateProjectSchema(produto)),
+        }}
+      />
     </section>
   );
 }
