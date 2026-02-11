@@ -33,7 +33,7 @@ export function CarouselHome({ items }: CarouselHomeProps) {
                 alt={item.image.alt}
                 width={item.image.width}
                 height={item.image.height}
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-contain"
                 priority={index === 0}
               />
               {item.link.slug && (

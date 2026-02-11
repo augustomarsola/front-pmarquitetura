@@ -59,7 +59,7 @@ export function CarouselProjeto({ images }: CarouselProjetoProps) {
       </Carousel>
 
       {/* Indicadores (bolinhas) */}
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center gap-2 mt-4 flex-wrap">
         {images.map((_, index) => (
           <button
             key={index}

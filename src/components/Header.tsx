@@ -121,7 +121,7 @@ export function Header({ logoPath }: HeaderProps) {
                   alt="Logo PM Arquitetura"
                   width={177}
                   height={54}
-                  className="mt-4 w-32 md:mt-0 md:w-auto"
+                  className="w-32 md:mt-0 md:w-auto"
                 />
               </Link>
             </SheetTitle>
