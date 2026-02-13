@@ -23,6 +23,18 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "http",
+        hostname: "cms.pmarquitetura.com.br",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "pmarquitetura.com.br",
+        port: "",
+        pathname: "/**",
+      },
     ],
     // Permite IPs privados em desenvolvimento
     dangerouslyAllowSVG: true,
