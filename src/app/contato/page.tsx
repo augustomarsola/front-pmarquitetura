@@ -64,7 +64,7 @@ export default async function Contato() {
 
       {/* Informações de contato */}
       <div
-        className="prose prose-gray max-w-none text-center"
+        className="prose prose-gray max-w-none text-right"
         dangerouslySetInnerHTML={{ __html: pageData.htmlContent }}
       />
     </section>

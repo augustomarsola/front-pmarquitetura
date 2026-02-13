@@ -49,7 +49,7 @@ export default async function Sobre() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         {pageData.image && (
           <div className="w-full">
             <Image
@@ -63,7 +63,7 @@ export default async function Sobre() {
           </div>
         )}
         <div
-          className="prose prose-gray max-w-none text-sm pt-8 space-y-4"
+          className="prose prose-gray max-w-none text-sm space-y-4"
           dangerouslySetInnerHTML={{ __html: pageData.htmlContent }}
         />
       </div>
