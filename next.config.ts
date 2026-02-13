@@ -31,6 +31,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "cms.pmarquitetura.com.br",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "pmarquitetura.com.br",
         port: "",
         pathname: "/**",
