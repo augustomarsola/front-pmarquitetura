@@ -121,14 +121,15 @@ export async function GET(request: NextRequest) {
     console.log("Starting cache revalidation...");
 
     // Estratégia 1: Invalidar tag global (atinge TODAS as páginas)
-    revalidateTag(CACHE_TAGS.SITE, "page");
+    // Usando { expire: 0 } para forçar invalidação imediata
+    revalidateTag(CACHE_TAGS.SITE, { expire: 0 });
     console.log(`Revalidated tag: ${CACHE_TAGS.SITE}`);
 
     // Estratégia 2: Invalidar tags específicas por tipo
-    revalidateTag(CACHE_TAGS.PAGES, "page");
-    revalidateTag(CACHE_TAGS.PROJECTS, "page");
-    revalidateTag(CACHE_TAGS.PRODUCTS, "page");
-    revalidateTag(CACHE_TAGS.PUBLICATIONS, "page");
+    revalidateTag(CACHE_TAGS.PAGES, { expire: 0 });
+    revalidateTag(CACHE_TAGS.PROJECTS, { expire: 0 });
+    revalidateTag(CACHE_TAGS.PRODUCTS, { expire: 0 });
+    revalidateTag(CACHE_TAGS.PUBLICATIONS, { expire: 0 });
     console.log("Revalidated all specific tags");
 
     // Estratégia 3: Forçar regeneração das rotas principais
@@ -146,9 +147,12 @@ export async function GET(request: NextRequest) {
       console.log(`Revalidated path: ${path}`);
     }
 
-    // Também revalidar as rotas dinâmicas (layout)
+    // Também revalidar as rotas dinâmicas (layout e page)
     revalidatePath("/projetos/[slug]", "page");
     revalidatePath("/produtos/[slug]", "page");
+    revalidatePath("/projetos", "layout");
+    revalidatePath("/produtos", "layout");
+    revalidatePath("/publicacoes", "layout");
     console.log("Revalidated dynamic routes");
 
     console.log("Cache revalidation completed successfully");
