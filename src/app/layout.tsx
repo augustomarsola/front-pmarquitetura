@@ -145,7 +145,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${acuminPro.className} antialiased bg-white flex flex-col min-h-screen`}
+        className={`${acuminPro.className} antialiased bg-white flex flex-col min-h-svh`}
       >
         <Header logoPath={logoPath} />
         <main className="grow">{children}</main>
