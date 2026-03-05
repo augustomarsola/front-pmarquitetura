@@ -1,4 +1,9 @@
-import { allTagsSlug } from "./constants";
+import {
+  CACHE_TAGS,
+  getPageTag,
+  getProductTag,
+  getProjectTag,
+} from "./constants";
 import type {
   CarouselImage,
   CarouselItem,
@@ -18,7 +23,8 @@ export async function getPageBySlug(slug: string): Promise<WPPageProps> {
     `${process.env.WP_BASE_URL}/wp-json/wp/v2/pages?slug=${slug}&_embed`,
     {
       next: {
-        tags: [allTagsSlug],
+        revalidate: 600,
+        tags: [CACHE_TAGS.SITE, CACHE_TAGS.PAGES, getPageTag(slug)],
       },
     },
   );
@@ -200,11 +206,18 @@ function extractTaxonomies(post: WPPost): {
  * Busca todos os posts de um tipo específico
  */
 export async function getAllPosts(postType: PostType): Promise<PostListItem[]> {
+  const tagMap = {
+    projetos: CACHE_TAGS.PROJECTS,
+    produtos: CACHE_TAGS.PRODUCTS,
+    publicacoes: CACHE_TAGS.PUBLICATIONS,
+  };
+
   const res = await fetch(
     `${process.env.WP_BASE_URL}/wp-json/wp/v2/${postType}?per_page=100&_embed&orderby=date&order=desc`,
     {
       next: {
-        tags: [allTagsSlug],
+        revalidate: 600,
+        tags: [CACHE_TAGS.SITE, tagMap[postType]],
       },
     },
   );
@@ -249,11 +262,28 @@ export async function getPostBySlug(
   postType: PostType,
   slug: string,
 ): Promise<PostDetail> {
+  const tagMap = {
+    projetos: CACHE_TAGS.PROJECTS,
+    produtos: CACHE_TAGS.PRODUCTS,
+    publicacoes: CACHE_TAGS.PUBLICATIONS,
+  };
+
+  const specificTagMap = {
+    projetos: getProjectTag,
+    produtos: getProductTag,
+    publicacoes: (s: string) => `publication:${s}`,
+  };
+
   const res = await fetch(
     `${process.env.WP_BASE_URL}/wp-json/wp/v2/${postType}?slug=${slug}&_embed`,
     {
       next: {
-        tags: [allTagsSlug],
+        revalidate: 600,
+        tags: [
+          CACHE_TAGS.SITE,
+          tagMap[postType],
+          specificTagMap[postType](slug),
+        ],
       },
     },
   );
