@@ -11,24 +11,38 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Sobre | Conheça o Estúdio PM Arquitetura",
-  description:
-    "Fundado em 2007 por Paulo Mencarini, o PM Arquitetura desenvolve projetos de arquitetura e design de interiores com atendimento personalizado. Conheça nossa história e equipe.",
-  keywords: [
-    "sobre pm arquitetura",
-    "paulo mencarini arquiteto",
-    "lucas navarro arquiteto",
-    "estúdio de arquitetura são paulo",
-    "arquitetura contemporânea",
-  ],
-  openGraph: {
-    title: "Sobre o PM Arquitetura | Estúdio de Arquitetura em São Paulo",
+export async function generateMetadata(): Promise<Metadata> {
+  const pageData = await getPageContent("sobre");
+
+  return {
+    title: "Sobre | Conheça o Estúdio PM Arquitetura",
     description:
-      "Conheça a história do estúdio fundado em 2007 e nossa equipe de arquitetos especializados em projetos personalizados.",
-    url: "/sobre",
-  },
-};
+      "Fundado em 2007 por Paulo Mencarini, o PM Arquitetura desenvolve projetos de arquitetura e design de interiores com atendimento personalizado. Conheça nossa história e equipe.",
+    keywords: [
+      "sobre pm arquitetura",
+      "paulo mencarini arquiteto",
+      "lucas navarro arquiteto",
+      "estúdio de arquitetura são paulo",
+      "arquitetura contemporânea",
+    ],
+    openGraph: {
+      title: "Sobre o PM Arquitetura | Estúdio de Arquitetura em São Paulo",
+      description:
+        "Conheça a história do estúdio fundado em 2007 e nossa equipe de arquitetos especializados em projetos personalizados.",
+      url: "/sobre",
+      images: pageData.image
+        ? [
+            {
+              url: pageData.image.src,
+              width: pageData.image.width,
+              height: pageData.image.height,
+              alt: pageData.image.alt || "PM Arquitetura - Sobre",
+            },
+          ]
+        : undefined,
+    },
+  };
+}
 
 export default async function Sobre() {
   const pageData = await getPageContent("sobre");
